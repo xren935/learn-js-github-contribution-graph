@@ -39,7 +39,7 @@ Date.prototype.addDays = function(days) {
 }
 
 console.log(`The Origin, aka the first box on the upper-left corner, shows your commits on ${oriMonth} ${oriDate}, ${oriYear}`);
-rl.question("Please indicate the x-coordinate (in numbers of boxes away from the Origin): ", function(x) {
+rl.question("Please indicate the x-coordinate (in numbers of boxes away from Origin): ", function(x) {
     xCoord = x; 
     //console.log(`${xCoord}, is the xCoord`);
     // get the y coordinate 
@@ -53,9 +53,9 @@ rl.question("Please indicate the x-coordinate (in numbers of boxes away from the
         var commitDate = theOrigin.addDays(noOfDays); 
         console.log(`You are making a commit ${noOfDays} days away from the Origin`);
         console.log(`Hit enter to make a commit @ ${commitDate}`);
-
-        //calls the makeSpecifiedCommit function to make the commit 
-        makeSpecifiedCommit(xCoord,yCoord);
+        //calls the makeSpecifiedCommit function to make the specified commit 
+        //makeSpecifiedCommit(xCoord,yCoord);
+        //fillChart(); 
         rl.close();
     });
 });
@@ -71,6 +71,7 @@ rl.question("Please indicate the x-coordinate (in numbers of boxes away from the
 // starting from the same date last year(the origin)
 // x is the horizontal shift, # of weeks away from the origin 
 // y is the vertical shift, # of days from the origin 
+ 
 const makeSpecifiedCommit = (x,y) => {
     //const x = random.int(0,54); //55 weeks, length of the profile   
     //const y = random.int(0,6); // 7 days a week, width of the profile 
@@ -87,9 +88,10 @@ const makeSpecifiedCommit = (x,y) => {
     const data = {
         data: DATE 
     }
-    jsonfile.writeFile(FILE_PATH, data, () =>{
-        simpleGit().add([FILE_PATH]).commit(DATE, {'--date': DATE}).push(); 
-    }); 
+    
+    // jsonfile.writeFile(FILE_PATH, data, () =>{
+    //     simpleGit().add([FILE_PATH]).commit(DATE, {'--date': DATE}).push(); 
+    // }); 
 }
 
 //generating random commits 
@@ -116,9 +118,26 @@ const makeRandomCommit = n => {
     }); 
 }
 
-//makeRandomCommit(5);
 
-//makeSpecifiedCommit(0,0); //one year ago 
+//fill the contribution chart 
+const fillChart = () => {
+    for(let x=0; x<2; x++){
+        for(let y=0; y<7; y++){
+            makeSpecifiedCommit(x, y);
+        }
+    }
+    // const DATE = moment().subtract(1,'y').add(x,'w').add(y,'d').format(); 
+    
+    // console.log("You made a commit @ " + DATE);
+    // const data = {
+    //     data: DATE 
+    // }
+    // jsonfile.writeFile(FILE_PATH, data, () =>{
+    //     simpleGit().add([FILE_PATH]).commit(DATE, {'--date': DATE}).push(); 
+    // }); 
+}
+fillChart();
+//makeRandomCommit(5); //makes 5 random commits
 
 //simpleGit().add() takes an list of files
 // modify the date in .commit() 
